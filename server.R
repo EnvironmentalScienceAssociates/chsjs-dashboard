@@ -60,7 +60,7 @@ function(input, output, session) {
   output$boxPlot <- renderPlotly({
     req(datSub3(), nrow(datSub3()) > 0)
     p = ggplot(datSub3(), aes(x = Site, y = Value)) + 
-      geom_boxplot(alpha = 0.3, fill = "grey80") +
+      geom_boxplot(alpha = 0.3, fill = "#50C1CC") +
       labs(y = input$parameter) +
       scale_x_discrete(limits = rev) +
       coord_flip() +
@@ -80,7 +80,7 @@ function(input, output, session) {
   
   output$barPlot <- renderPlotly({
     p = ggplot(barSumm(), aes(y = Site, x = Value)) +
-      geom_col() +
+      geom_col(fill = "#50C1CC") +
       scale_y_discrete(limits = rev) +
       labs(x = input$parameter) +
       theme_bw() 
@@ -103,7 +103,7 @@ function(input, output, session) {
     p = ggplot(tileSumm(), aes(y = Site, x = Parameter, fill = Percentile, label = Value)) +
       geom_tile() +
       scale_y_discrete(limits = rev) +
-      scale_fill_gradient2(mid = "#f7f7f7", low = scales::muted("blue"), high = scales::muted("red"), midpoint = 50) +
+      scale_fill_gradient2(mid = "#f7f7f7", low = scales::muted("#50C1CC"), high = scales::muted("red"), midpoint = 50) +
       labs(x = "",) +
       theme_bw() +
       theme(axis.text.x = element_text(angle = 30, hjust = 1, vjust = 0.5))
