@@ -17,7 +17,7 @@ page_navbar(
     layout_columns(
       col_widths = c(3, 6, 3),
       p(),
-      HTML(file.path("static", "Example.rmd") |>
+      HTML(file.path("static", "Example.Rmd") |>
              knitr::knit(quiet = TRUE) |> 
              markdown::markdownToHTML(fragment.only = TRUE)),
       p()
