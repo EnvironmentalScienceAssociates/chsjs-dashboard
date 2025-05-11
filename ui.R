@@ -6,9 +6,20 @@ page_navbar(
   nav_panel(
     title = "Background",
     layout_columns(
-      col_widths = c(2, 8, 2),
+      col_widths = c(3, 6, 3),
       p(),
-      includeMarkdown("markdown/background.md"),
+      includeMarkdown("static/background.md"),
+      p()
+    )
+  ),
+  nav_panel(
+    title = "R Markdown Example",
+    layout_columns(
+      col_widths = c(3, 6, 3),
+      p(),
+      HTML(file.path("static", "Example.rmd") |>
+             knitr::knit(quiet = TRUE) |> 
+             markdown::markdownToHTML(fragment.only = TRUE)),
       p()
     )
   ),
