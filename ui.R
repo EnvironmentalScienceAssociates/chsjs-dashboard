@@ -6,21 +6,25 @@ page_navbar(
   nav_panel(
     title = "Background",
     layout_columns(
-      col_widths = c(3, 6, 3),
-      p(),
+      col_widths = breakpoints(
+        sm = c(-1, 10, -1),
+        md = c(-2, 8, -2),
+        lg = c(-3, 6, -3)
+      ),
       includeMarkdown("static/background.md"),
-      p()
     )
   ),
   nav_panel(
     title = "R Markdown Example",
     layout_columns(
-      col_widths = c(3, 6, 3),
-      p(),
+      col_widths = breakpoints(
+        sm = c(-1, 10, -1),
+        md = c(-2, 8, -2),
+        lg = c(-3, 6, -3)
+      ),
       HTML(file.path("static", "Example.Rmd") |>
              knitr::knit(quiet = TRUE) |> 
-             markdown::markdownToHTML(fragment.only = TRUE)),
-      p()
+             markdown::markdownToHTML(fragment.only = TRUE))
     )
   ),
   nav_panel(
