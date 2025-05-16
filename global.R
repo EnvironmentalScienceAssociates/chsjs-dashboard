@@ -10,6 +10,7 @@ library(leaflegend)
 library(plotly)
 library(bslib)
 library(sf)
+library(markdown)
 
 percentile <- function(x){
   rank_x = rank(x)
