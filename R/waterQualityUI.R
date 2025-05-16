@@ -24,10 +24,10 @@ waterQualityUI <- function(id){
     navset_card_underline(
       id = ns("panel"),
       nav_panel("Map", leafletOutput(ns("map"))),
-      nav_panel("Time Series Plot", plotlyOutput(ns("tsPlot"))),
       nav_panel("Box Plot", plotlyOutput(ns("boxPlot"))),
       nav_panel("Bar Plot", plotlyOutput(ns("barPlot"))),
       nav_panel("Tile Plot", plotlyOutput(ns("tilePlot"))),
+      nav_panel("Time Series Plot", plotlyOutput(ns("tsPlot"))),
       nav_panel("Table", DT::dataTableOutput(ns("table")))
     )
   )
