@@ -1,14 +1,15 @@
-## Background
+Welcome to the Clearwater Harbor & St. Joseph Sound data dashboard. The purpose of this web app is to provide updates on data collection for the CHSJS Nutrient Source Tracking Project. The app contains pages on all sampling elements that have generated data to date. NOTE: It is still under construction. 
 
-Welcome to the Mustique Environmental Monitoring Page where a synopsis of environmental monitoring programs and data visualizations can be found at the tabs on the left hand side of the page. This site is currently in development.   
+### Water Quality
 
-### Goal 
-Monitor and improve ecological health on Mustique by collecting data to inform science-based decision making.
+The Water Quality page contains the routine water quality data and the ESA extra sites for the 2024 monitoring activities. The tabs provide different ways of looking at the data for a specific parameter or site as well as the interactivity showing the data values or site locations (maps).
 
-### Objective
-Develop an efficient and effective routine monitoring strategy designed to evaluate the ecological health of valued natural resources. 
+### Isotopes 
 
-## Conceptual Model
-The goals and objectives were formulated around a "Ridge to Reef" conceptual model that integrates all components around a central theme of connectedness. 
+The Isotopes page contains a single interactive scatter plot of Delta 18O and Delta 15N annotated with bounding boxes showing potential sources of nitrate ([Canion et al. 2020](https://doi.org/10.2113/EEG-2310)).
 
-All data are provisional and subject to revision
+### Groundwater
+
+### Seagrass
+
+### Events
