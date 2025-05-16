@@ -40,6 +40,24 @@ date_lab = format(date_seq, "%b %d")
 blue_light = "#8accd2"
 blue_dark = "#258eac"
 
+basemap = leaflet(options = leafletOptions(attributionControl = FALSE)) |>
+  addTiles() |>
+  addProviderTiles(providers$Esri.WorldTopoMap, group = "Topo") |>
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imagery") |>
+  setView(lat = 28.03, lng = -82.775, zoom = 11) |>
+  addLayersControl(baseGroups = c("Topo", "Imagery"),
+                   options = layersControlOptions(collapsed = FALSE))
+
+add_circles <- function(map, ...){
+  map |> 
+    addCircleMarkers(radius = 6,
+                     color = "black",
+                     weight = 1,
+                     opacity = 1,
+                     fillOpacity = 0.8,
+                     ...)
+}
+
 layout_columns_custom <- function(...){
   layout_columns(
     col_widths = breakpoints(

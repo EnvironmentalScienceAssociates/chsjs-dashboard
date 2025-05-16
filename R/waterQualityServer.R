@@ -125,13 +125,7 @@ waterQualityServer <- function(id, nav_page){
     })
     
     output$map <- renderLeaflet({
-      leaflet(options = leafletOptions(attributionControl = FALSE)) |>
-        addTiles() |>
-        addProviderTiles(providers$Esri.WorldTopoMap, group = "Topo") |>
-        addProviderTiles(providers$Esri.WorldImagery, group = "Imagery") |>
-        setView(lat = 28.03, lng = -82.775, zoom = 11) |>
-        addLayersControl(baseGroups = c("Topo", "Imagery"),
-                         options = layersControlOptions(collapsed = FALSE))
+      basemap
     })
     
     myPalette <- reactive({
@@ -146,17 +140,12 @@ waterQualityServer <- function(id, nav_page){
         clearControls()
       
       leafletProxy("map")|>
-        addCircleMarkers(data = mapData(), 
-                         lng = ~Lon, 
-                         lat = ~Lat, 
-                         label = ~Site, 
-                         popup = ~Popup,
-                         radius = 6,
-                         color = "black",
-                         weight = 1,
-                         opacity = 1,
-                         fillColor = ~myPalette()(Value), 
-                         fillOpacity = 0.8) |> 
+        add_circles(data = mapData(), 
+                    lng = ~Lon, 
+                    lat = ~Lat, 
+                    label = ~Site, 
+                    popup = ~Popup,
+                    fillColor = ~myPalette()(Value)) |> 
         addLegend("bottomright", pal = myPalette(), values = mapData()$Value, 
                   title = paste(input$stat, "<br>", input$parameter))
     })
