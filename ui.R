@@ -1,38 +1,26 @@
 
 page_navbar(
-  title = "Clearwater Harbor and Saint Joseph Sound",
+  title = "Clearwater Harbor & St. Joseph Sound",
   window_title = "CHSJS",
-  id = "nav",
+  id = "nav_page",
+  navbar_options = navbar_options(bg = blue_dark),
+  theme = bs_theme(
+    primary = blue_light,
+    secondary = blue_dark) |> 
+    bs_add_rules(list(paste0("h", 1:5, " { color: ", blue_dark, "; }"))),
   nav_panel(
     title = "Background",
-    layout_columns(
-      col_widths = breakpoints(
-        sm = c(-1, 10, -1),
-        md = c(-2, 8, -2),
-        lg = c(-3, 6, -3)
-      ),
-      includeMarkdown("static/background.md"),
+    layout_columns_custom(
+      includeMarkdown("markdown/background.md")
     )
   ),
-  # nav_panel(
-  #   title = "R Markdown Example",
-  #   layout_columns(
-  #     col_widths = breakpoints(
-  #       sm = c(-1, 10, -1),
-  #       md = c(-2, 8, -2),
-  #       lg = c(-3, 6, -3)
-  #     ),
-  #     HTML(file.path("static", "Example.Rmd") |>
-  #            knitr::knit(quiet = TRUE) |> 
-  #            markdown::markdownToHTML(fragment.only = TRUE))
-  #   )
-  # ),
   nav_panel(
     title = "Water Quality",
     waterQualityUI("wq")
   ),
   nav_panel(
-    title = "Isotopes"
+    title = "Isotopes",
+    layout_columns_custom(isotopesUI("iso"))
   ),
   nav_panel(
     title = "Groundwater"
@@ -44,7 +32,6 @@ page_navbar(
     title = "Events"
   ),
   nav_spacer(),
-  nav_item(a("Source Code", href = "https://github.com/EnvironmentalScienceAssociates/chsjs-dashboard",
-             target = "_blank")),
-  nav_item(img(src="logo.jpg", alt="CHSJS logo", width = "60")),
+  nav_item(a(icon("github"), href = "https://github.com/EnvironmentalScienceAssociates/chsjs-dashboard",
+             target = "_blank", title = "Source Code"))
 )

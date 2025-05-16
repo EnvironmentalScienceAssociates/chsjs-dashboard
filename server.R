@@ -1,5 +1,9 @@
 function(input, output, session) {
   
-  waterQualityServer("wq")
+  nav_page <- reactive({ input$nav_page })
+  
+  waterQualityServer("wq", nav_page)
+  
+  isotopesServer("iso")
   
 }

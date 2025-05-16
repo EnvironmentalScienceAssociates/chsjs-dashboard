@@ -22,8 +22,7 @@ waterQualityUI <- function(id){
       downloadButton(ns("downloadAllData"), "Download All Data")
     ),
     navset_card_underline(
-      id = "panel",
-      title = "All data are provisional and subject to revision",
+      id = ns("panel"),
       nav_panel("Map", leafletOutput(ns("map"))),
       nav_panel("Time Series Plot", plotlyOutput(ns("tsPlot"))),
       nav_panel("Box Plot", plotlyOutput(ns("boxPlot"))),

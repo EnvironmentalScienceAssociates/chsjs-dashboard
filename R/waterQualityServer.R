@@ -1,5 +1,5 @@
 
-waterQualityServer <- function(id){
+waterQualityServer <- function(id, nav_page){
   moduleServer(id, function(input, output, session) {
     
     statFN <- reactive({
@@ -20,7 +20,7 @@ waterQualityServer <- function(id){
     })
     
     datSub1 <- reactive({
-      filter(df, Level == input$level & Date >= selDates()[1] & Date <= selDates()[2])
+      filter(wq, Level == input$level & Date >= selDates()[1] & Date <= selDates()[2])
     })
     
     observe({
@@ -62,7 +62,7 @@ waterQualityServer <- function(id){
     output$boxPlot <- renderPlotly({
       req(datSub3(), nrow(datSub3()) > 0)
       p = ggplot(datSub3(), aes(x = Site, y = Value)) + 
-        geom_boxplot(alpha = 0.3, fill = "#50C1CC") +
+        geom_boxplot(alpha = 0.3, fill = blue_light) +
         labs(y = input$parameter) +
         scale_x_discrete(limits = rev) +
         coord_flip() +
@@ -82,7 +82,7 @@ waterQualityServer <- function(id){
     
     output$barPlot <- renderPlotly({
       p = ggplot(barSumm(), aes(y = Site, x = Value)) +
-        geom_col(fill = "#50C1CC") +
+        geom_col(fill = blue_light) +
         scale_y_discrete(limits = rev) +
         labs(x = input$parameter) +
         theme_bw() 
@@ -105,7 +105,7 @@ waterQualityServer <- function(id){
       p = ggplot(tileSumm(), aes(y = Site, x = Parameter, fill = Percentile, label = Value)) +
         geom_tile() +
         scale_y_discrete(limits = rev) +
-        scale_fill_gradient2(mid = "#f7f7f7", low = scales::muted("#50C1CC"), high = scales::muted("red"), midpoint = 50) +
+        scale_fill_gradient2(mid = "#f7f7f7", low = scales::muted(blue_dark), high = scales::muted("red"), midpoint = 50) +
         labs(x = "",) +
         theme_bw() +
         theme(axis.text.x = element_text(angle = 30, hjust = 1, vjust = 0.5))
@@ -139,7 +139,7 @@ waterQualityServer <- function(id){
     })
     
     observe({
-      input$nav # take a dependency on nav changes
+      req(nav_page() == "Water Quality")
       leafletProxy("map")|>
         clearShapes() |>
         clearMarkers() |>
@@ -186,7 +186,7 @@ waterQualityServer <- function(id){
         paste0("CHSJS-AllData-", Sys.Date(), ".csv")
       },
       content = function(file) {
-        write.csv(mutate(df, Date = as.character(Date)), file, row.names = FALSE)
+        write.csv(mutate(wq, Date = as.character(Date)), file, row.names = FALSE)
       }
     )
     
