@@ -13,3 +13,7 @@ The Isotopes page contains a single interactive scatter plot of Delta 18O and De
 ### Seagrass
 
 ### Events
+
+
+***
+Contact [Mike Wessel](mailto:mwessel@esassoc.com) with any questions about this dashboard. The source content can be viewed on [GitHub](https://github.com/EnvironmentalScienceAssociates/chsjs-dashboard).
