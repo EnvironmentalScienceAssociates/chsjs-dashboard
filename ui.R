@@ -9,9 +9,9 @@ page_navbar(
     secondary = blue_dark) |> 
     bs_add_rules(list(paste0("h", 1:5, " { color: ", blue_dark, "; }"))),
   nav_panel(
-    title = "Background",
+    title = "About",
     layout_columns_custom(
-      includeMarkdown("markdown/background.md")
+      includeMarkdown("markdown/about.md")
     )
   ),
   nav_panel(
