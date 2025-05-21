@@ -8,6 +8,10 @@ The Water Quality page contains the routine water quality data and the ESA extra
 
 The Isotopes page contains a single interactive scatter plot of Delta 18O and Delta 15N annotated with bounding boxes showing potential sources of nitrate ([Canion et al. 2020](https://doi.org/10.2113/EEG-2310)).
 
+### Rainfall
+
+The Rainfall page contains a map of annual rainful based on daily NEXRAD data avalable from SWFWMD. There are known issues with 2004 data due to problems with that year's radar.
+
 ### Groundwater
 
 ### Seagrass

@@ -23,6 +23,10 @@ page_navbar(
     layout_columns_custom(isotopesUI("iso"))
   ),
   nav_panel(
+    title = "Rainfall",
+    layout_columns_custom(rainfallUI("rain"))
+  ),
+  nav_panel(
     title = "Groundwater"
   ),
   nav_panel(

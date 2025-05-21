@@ -12,6 +12,9 @@ library(bslib)
 library(sf)
 library(markdown)
 
+pixel_basin_sf = readRDS(file.path("data", "pixel_basin_sf.rds"))
+rainfall = readRDS(file.path("data", "annual-rainfall.rds"))
+
 isotopes = readRDS(file.path("data", "isotopes.rds")) |> 
   mutate(Tooltip = paste0("Date: ", Date, "<br>",
                           "Site: ", Site, "<br>",
@@ -40,6 +43,5 @@ basemap = leaflet(options = leafletOptions(attributionControl = FALSE)) |>
   addTiles() |>
   addProviderTiles(providers$Esri.WorldTopoMap, group = "Topo") |>
   addProviderTiles(providers$Esri.WorldImagery, group = "Imagery") |>
-  setView(lat = 28.03, lng = -82.775, zoom = 11) |>
   addLayersControl(baseGroups = c("Topo", "Imagery"),
                    options = layersControlOptions(collapsed = FALSE))

@@ -125,7 +125,8 @@ waterQualityServer <- function(id, nav_page){
     })
     
     output$map <- renderLeaflet({
-      basemap
+      basemap |> 
+        setView(lat = 28.03, lng = -82.775, zoom = 11)
     })
     
     myPalette <- reactive({

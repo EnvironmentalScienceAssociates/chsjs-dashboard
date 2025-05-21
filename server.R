@@ -6,4 +6,6 @@ function(input, output, session) {
   
   isotopesServer("iso")
   
+  rainfallServer("rain", nav_page)
+  
 }
