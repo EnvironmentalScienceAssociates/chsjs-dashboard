@@ -12,15 +12,13 @@ seagrassServer <- function(id){
       dfx[dfx[["StatKey"]] %in% unique(stationsSub()[["StatKey"]]), ]
     })
     
-    speciesSub <- reactive({
+    speciesWide <- reactive({
       # taking the approach of pivoting wider to fill all sample dates
       req(input$param %in% c("BL_avg", "PerCov"), nrow(sitesSub()) > 0)
-      out = seagrass_species |> 
-        filter(SiteKey %in% unique(sitesSub()[["SiteKey"]])) |> 
+      seagrass_species |> 
         select(all_of(c("SiteKey", "Species", input$param))) |> 
-        pivot_wider(names_from = "Species", values_from = input$param)
-      out[[input$species]] = ifelse(is.na(out[[input$species]]), 0, out[[input$species]])
-      out
+        pivot_wider(names_from = "Species", values_from = input$param) |> 
+        mutate(Resp = ifelse(is.na(.data[[input$species]]), 0, .data[[input$species]]))
     })
     
     tsSumm <- reactive({
@@ -39,18 +37,19 @@ seagrassServer <- function(id){
         out = sitesSub() |> 
           left_join(select(stationsSub(), StatKey, Year, Strata), by = join_by(StatKey)) |> 
           group_by(Strata, Year) |> 
-          summarise(Resp = mean(.data[[input$param]])) |> 
+          summarise(Resp = mean(.data[[input$param]], na.rm = TRUE)) |> 
           mutate(Tooltip = paste0("Year: ", Year, "<br>",
                                   "Cover: ", round(Resp, 2), "%<br>",
                                   "Strata: ", Strata))
       }
       
       if (input$param %in% c("PerCov", "BL_avg")){
-        out = speciesSub() |> 
+        out = speciesWide() |> 
+          filter(SiteKey %in% unique(sitesSub()[["SiteKey"]])) |> 
           left_join(select(sitesSub(), SiteKey, StatKey), by = join_by(SiteKey)) |> 
           left_join(select(stationsSub(), StatKey, Year, Strata), by = join_by(StatKey)) |> 
           group_by(Strata, Year) |> 
-          summarise(Resp = mean(.data[[input$species]]))
+          summarise(Resp = mean(Resp, na.rm = TRUE))
         
         if (input$param == "PerCov"){
           out = mutate(out, Tooltip = paste0("Year: ", Year, "<br>",

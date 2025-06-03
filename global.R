@@ -25,7 +25,7 @@ seagrass_species = readRDS(file.path("data", "seagrass_species.rds"))
 species_sg = c("Syringodium", "Thalassia", "Halodule")
 params_sg = c("Blade Length" = "BL_avg", 
               "Percent Cover" = "PerCov",
-              "Percent Cover (SAV)" = "SAV_PerCov",  
+              "Percent Cover (SAV Total)" = "SAV_PerCov",  
               "Attached Algae" = "AAlgae_PerCov",
               "Detached Algae" = "DAlgae_PerCov",
               "Depth" = "Depth_m")
