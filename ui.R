@@ -27,10 +27,11 @@ page_navbar(
     layout_columns_custom(rainfallUI("rain"))
   ),
   nav_panel(
-    title = "Groundwater"
+    title = "Seagrass",
+    layout_columns_custom(seagrassUI("sg"))
   ),
   nav_panel(
-    title = "Seagrass"
+    title = "Groundwater"
   ),
   nav_panel(
     title = "Events"

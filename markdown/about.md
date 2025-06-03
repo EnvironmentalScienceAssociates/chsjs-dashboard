@@ -12,9 +12,11 @@ The Isotopes page contains a single interactive scatter plot of Delta 18O and De
 
 The Rainfall page contains a map of annual rainful based on daily NEXRAD data avalable from SWFWMD. There are known issues with 2004 data due to problems with that year's radar.
 
-### Groundwater
-
 ### Seagrass
+
+The Seagrass page contains an annual time series plot for the selected parameter (i.e., cover, blade length, or depth) by strata. 
+
+### Groundwater
 
 ### Events
 

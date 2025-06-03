@@ -8,4 +8,6 @@ function(input, output, session) {
   
   rainfallServer("rain", nav_page)
   
+  seagrassServer("sg")
+  
 }
