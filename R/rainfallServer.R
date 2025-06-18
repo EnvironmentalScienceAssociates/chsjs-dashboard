@@ -1,7 +1,7 @@
 
 rainfallServer <- function(id, nav_page){
   moduleServer(id, function(input, output, session) {
-
+    
     pal <- reactive({
       colorNumeric(palette = "Blues", domain = seq(15, 85, 10))
     })
@@ -21,17 +21,15 @@ rainfallServer <- function(id, nav_page){
       
       yr_chr = as.character(input$yr)
       map_data = left_join(pixel_basin_sf, rainfall[,c("pixel", yr_chr)],
-                           by = join_by(pixel))
+                           by = join_by(pixel)) |> 
+        mutate(fill_color = pal()(.data[[yr_chr]]),
+               label = paste(.data[[yr_chr]], " in."))
       
-      map_data$label = paste(map_data[[yr_chr]], " in.")
-    
       leafletProxy("map")|>
-        addPolygons(data = map_data, 
-                    weight = 0,
-                    opacity = 0,
-                    fillOpacity = 0.6,
-                    label = ~label,
-                    color = pal()(map_data[[yr_chr]]))
+        leafgl::addGlPolygons(data = map_data, 
+                              fillColor = map_data$fill_color,
+                              fillOpacity = 0.6,
+                              popup = map_data$label)
     })
     
   })
