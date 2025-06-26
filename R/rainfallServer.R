@@ -17,7 +17,7 @@ rainfallServer <- function(id, nav_page){
       req(nav_page() == "Rainfall")
       
       leafletProxy("map")|>
-        clearShapes()
+        leafgl::clearGlLayers()
       
       yr_chr = as.character(input$yr)
       map_data = left_join(pixel_basin_sf, rainfall[,c("pixel", yr_chr)],
@@ -28,7 +28,7 @@ rainfallServer <- function(id, nav_page){
       leafletProxy("map")|>
         leafgl::addGlPolygons(data = map_data, 
                               fillColor = map_data$fill_color,
-                              fillOpacity = 0.6,
+                              fillOpacity = 0.7,
                               popup = map_data$label)
     })
     
