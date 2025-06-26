@@ -13,14 +13,9 @@ waterQualityServer <- function(id, nav_page){
     rv <- reactiveValues(last_param = NULL)
     
     # Filter ------------------------------------------------------------------
-    
-    selDates <- reactive({
-      c(date_seq[date_lab == input$date_range[1]],
-        date_seq[date_lab == input$date_range[2]])
-    })
-    
+
     datSub1 <- reactive({
-      filter(wq, Level == input$level & Date >= selDates()[1] & Date <= selDates()[2])
+      filter(wq, Level == input$level & Date >= input$date_range[1] & Date <= input$date_range[2])
     })
     
     observe({

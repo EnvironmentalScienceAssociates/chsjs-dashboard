@@ -5,8 +5,9 @@ waterQualityUI <- function(id){
     sidebar = sidebar(
       id = "sidebar",
       width = 320,
-      sliderTextInput(inputId = ns("date_range"), label = "Date Range", choices = date_lab, 
-                      selected = date_lab[date_seq %in% c(min_date, max_date)]),
+      dateRangeInput(inputId = ns("date_range"), label = "Date Range", 
+                     start = min_date_wq, end = max_date_wq, 
+                     min = min_date_wq, max = max_date_wq),
       selectInput(inputId = ns('level'), label = 'Sample Level', 
                   choices = c("Surface", "Bottom")),
       conditionalPanel(condition = 'input.panel != "Tile Plot"',
