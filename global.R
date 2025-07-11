@@ -1,4 +1,5 @@
-options(dplyr.summarise.inform = FALSE)
+options(dplyr.summarise.inform = FALSE,
+        shiny.autoreload = TRUE)
 library(shinyWidgets)
 library(shiny) 
 library(dplyr)
@@ -40,7 +41,8 @@ strata_colors = c("#1193BA", "#F9A134", "#8FCEA5") |>
 # Rainfall ----------------------------------------------------------------
 
 pixel_basin_sf = readRDS(file.path("data", "pixel_basin_sf.rds"))
-rainfall = readRDS(file.path("data", "annual-rainfall.rds"))
+rainfall_monthly = readRDS(file.path("data", "monthly-rainfall.rds"))
+months = setNames(1:12, month.abb[1:12])
 
 # Isotopes ----------------------------------------------------------------
 

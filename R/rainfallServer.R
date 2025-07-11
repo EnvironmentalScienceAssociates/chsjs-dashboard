@@ -2,34 +2,69 @@
 rainfallServer <- function(id, nav_page){
   moduleServer(id, function(input, output, session) {
     
-    pal <- reactive({
-      colorNumeric(palette = "Blues", domain = seq(15, 85, 10))
+    rainfallDomain <- reactive({
+      req(input$months)
+      # define palette across all years
+      dfx = rainfall_monthly |> 
+        filter(month %in% input$months) |> 
+        group_by(year, pixel) |>
+        summarise(value = sum(value, na.rm = TRUE))
+      dfx[["value"]]
+    })
+    
+    rainfallPal <- reactive({
+      colorNumeric(palette = "PuOr", domain = rainfallDomain())
+    })
+    
+    rainfall <- reactive({
+      req(input$months)
+      
+      dfx = rainfall_monthly |> 
+        filter(year == input$year &
+                 month %in% input$months) |> 
+        group_by(pixel) |>
+        summarise(value = sum(value, na.rm = TRUE))
+      
+      left_join(pixel_basin_sf, dfx, by = join_by(pixel)) |>
+        filter(!is.na(value)) |>
+        mutate(fill_color = rainfallPal()(.data[["value"]]),
+               label = paste("Pixel:", pixel, "<br>",
+                             "Rainfall:", .data[["value"]], " in."))
     })
     
     output$map <- renderLeaflet({
       basemap |> 
-        setView(lat = 27.9, lng = -82.775, zoom = 10) |> 
-        addLegend("bottomright", pal = pal(), values = seq(15, 85, 10),
-                  title = "Annual<br>Rainfall (in.)")
+        setView(lat = 27.9, lng = -82.775, zoom = 10)
+    })
+    
+    proxy <- leafletProxy("map")
+    
+    observe({
+      req(nav_page() == "Rainfall")
+      
+      proxy |>
+        leafgl::clearGlLayers()
+      
+      if (nrow(rainfall()) > 0){
+        proxy |> 
+          leafgl::addGlPolygons(data = rainfall(), 
+                                fillColor = rainfall()$fill_color,
+                                fillOpacity = 0.7,
+                                popup = rainfall()$label)
+      }
     })
     
     observe({
       req(nav_page() == "Rainfall")
       
-      leafletProxy("map")|>
-        leafgl::clearGlLayers()
+      proxy |>
+        removeControl("rainfall")
       
-      yr_chr = as.character(input$yr)
-      map_data = left_join(pixel_basin_sf, rainfall[,c("pixel", yr_chr)],
-                           by = join_by(pixel)) |> 
-        mutate(fill_color = pal()(.data[[yr_chr]]),
-               label = paste(.data[[yr_chr]], " in."))
-      
-      leafletProxy("map")|>
-        leafgl::addGlPolygons(data = map_data, 
-                              fillColor = map_data$fill_color,
-                              fillOpacity = 0.7,
-                              popup = map_data$label)
+      if (nrow(rainfall()) > 0){
+        proxy |> 
+          addLegend("bottomleft", pal = rainfallPal(), values = rainfallDomain(),
+                    title = "Rainfall (in.)", layerId = "rainfall")
+      }
     })
     
   })
