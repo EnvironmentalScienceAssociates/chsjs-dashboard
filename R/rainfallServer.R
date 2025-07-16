@@ -25,16 +25,16 @@ rainfallServer <- function(id, nav_page){
         group_by(pixel) |>
         summarise(value = sum(value, na.rm = TRUE))
       
-      left_join(pixel_basin_sf, dfx, by = join_by(pixel)) |>
+      left_join(pixel_chsjs_sf, dfx, by = join_by(PIXEL == pixel)) |>
         filter(!is.na(value)) |>
         mutate(fill_color = rainfallPal()(.data[["value"]]),
-               label = paste("Pixel:", pixel, "<br>",
+               label = paste("Pixel:", PIXEL, "<br>",
                              "Rainfall:", .data[["value"]], " in."))
     })
     
     output$map <- renderLeaflet({
       basemap |> 
-        setView(lat = 27.9, lng = -82.775, zoom = 10)
+        setView(lat = 28, lng = -82.775, zoom = 10)
     })
     
     proxy <- leafletProxy("map")

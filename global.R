@@ -40,7 +40,11 @@ strata_colors = c("#1193BA", "#F9A134", "#8FCEA5") |>
 
 # Rainfall ----------------------------------------------------------------
 
-pixel_basin_sf = readRDS(file.path("data", "pixel_basin_sf.rds"))
+pixel_county_chsjs_sf = readRDS(file.path("data", "pixel_county_chsjs_sf.rds")) |> 
+  # retain any pixels that include any part of Pinellas Co. or water
+  filter(NAME %in% c("PINELLAS", "WATER"))
+pixel_chsjs_sf = readRDS(file.path("data", "pixel_chsjs_sf.rds")) |> 
+  filter(PIXEL %in% unique(pixel_county_chsjs_sf$PIXEL))
 rainfall_monthly = readRDS(file.path("data", "monthly-rainfall.rds"))
 months = setNames(1:12, month.abb[1:12])
 
