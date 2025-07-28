@@ -21,16 +21,17 @@ blue_dark = "#258eac"
 if (!dir.exists("data")) dir.create("data")
 
 remote_path = file.path("Shared", "Projects", "2020", "D202001308.05 - Clearwater Harbor St. Joseph Sound FY24",
-                        "Data", "CHSJS Data Collection")
+                        "Data", "CHSJS Data Collection", "CHSJS-Dashboard-Data")
 
 egnyte_files = c("isotopes.rds", "monthly-rainfall.rds", "pixel_chsjs_sf.rds", "seagrass_sites.rds",
                  "seagrass_species.rds", "seagrass_stations.rds")
 
 for (i in egnyte_files){
-  Sys.sleep(0.2) # avoid rate limiting and 403
-  download_file(file.path(remote_path, i), file.path("data", i),
-                domain = "https://oneesa.egnyte.com",
-                token = Sys.getenv("EgnyteKey"))
+  Sys.sleep(0.4) # avoid rate limiting and 403
+  # https://github.com/thinkelman-esa/egnyter
+  egnyter::download_file(file.path(remote_path, i), file.path("data", i),
+                         domain = "https://oneesa.egnyte.com",
+                         token = Sys.getenv("EgnyteKey"))
 }
 
 # Seagrass ----------------------------------------------------------------
