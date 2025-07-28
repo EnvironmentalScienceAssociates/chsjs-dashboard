@@ -24,7 +24,7 @@ remote_path = file.path("Shared", "Projects", "2020", "D202001308.05 - Clearwate
                         "Data", "CHSJS Data Collection", "CHSJS-Dashboard-Data")
 
 egnyte_files = c("isotopes.rds", "monthly-rainfall.rds", "pixel_chsjs_sf.rds", "seagrass_sites.rds",
-                 "seagrass_species.rds", "seagrass_stations.rds")
+                 "seagrass_species.rds", "seagrass_stations.rds", "wq.rds")
 
 for (i in egnyte_files){
   Sys.sleep(0.4) # avoid rate limiting and 403
@@ -72,7 +72,7 @@ isotopes = readRDS(file.path("data", "isotopes.rds")) |>
 
 # Water Quality -----------------------------------------------------------
 
-wq_raw = readRDS(url("https://github.com/mkwessel/CHSJS/raw/main/CHSJS_WQ_Data25.rds"))
+wq_raw = readRDS(file.path("data", "wq.rds"))
 
 site_locs = wq_raw |> 
   select(Site, Lat, Lon) |> 
