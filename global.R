@@ -16,6 +16,23 @@ library(markdown)
 blue_light = "#8accd2"
 blue_dark = "#258eac"
 
+# Data --------------------------------------------------------------------
+
+if (!dir.exists("data")) dir.create("data")
+
+remote_path = file.path("Shared", "Projects", "2020", "D202001308.05 - Clearwater Harbor St. Joseph Sound FY24",
+                        "Data", "CHSJS Data Collection")
+
+egnyte_files = c("isotopes.rds", "monthly-rainfall.rds", "pixel_chsjs_sf.rds", "seagrass_sites.rds",
+                 "seagrass_species.rds", "seagrass_stations.rds")
+
+for (i in egnyte_files){
+  Sys.sleep(0.2) # avoid rate limiting and 403
+  download_file(file.path(remote_path, i), file.path("data", i),
+                domain = "https://oneesa.egnyte.com",
+                token = Sys.getenv("EgnyteKey"))
+}
+
 # Seagrass ----------------------------------------------------------------
 
 seagrass_stations = readRDS(file.path("data", "seagrass_stations.rds")) |> 
