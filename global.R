@@ -20,9 +20,10 @@ blue_dark = "#258eac"
 
 if (!dir.exists("data")) dir.create("data")
 
-remote_path = file.path("Shared", "Projects", "2020", "D202001308.05 - Clearwater Harbor St. Joseph Sound FY24",
-                        "Data", "CHSJS Data Collection", "CHSJS-Dashboard-Data")
+remote_path = file.path("Shared","Projects","2020","D202001308.05 - Clearwater Harbor St. Joseph Sound FY24",
+                        "Analysis","R Analysis","Rdata")
 
+ 
 egnyte_files = c("isotopes.rds", "monthly-rainfall.rds", "pixel_chsjs_sf.rds", "seagrass_sites.rds",
                  "seagrass_species.rds", "seagrass_stations.rds", "wq.rds")
 
