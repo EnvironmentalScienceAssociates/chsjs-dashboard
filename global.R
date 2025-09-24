@@ -20,12 +20,13 @@ blue_dark = "#258eac"
 
 if (!dir.exists("data")) dir.create("data")
 
-remote_path = file.path("Shared","Projects","2020","D202001308.05 - Clearwater Harbor St. Joseph Sound FY24",
-                        "Analysis","R Analysis","Rdata")
+remote_path = file.path("Shared", "Projects", "2020", 
+                        "D202001308.05 - Clearwater Harbor St. Joseph Sound FY24",
+                        "Analysis", "R Analysis", "Rdata")
 
  
 egnyte_files = c("isotopes.rds", "monthly-rainfall.rds", "pixel_chsjs_sf.rds", "seagrass_sites.rds",
-                 "seagrass_species.rds", "seagrass_stations.rds", "wq.rds")
+                 "seagrass_species.rds", "seagrass_stations.rds", "wq_combined.rds")
 
 for (i in egnyte_files){
   Sys.sleep(0.4) # avoid rate limiting and 403
@@ -73,18 +74,27 @@ isotopes = readRDS(file.path("data", "isotopes.rds")) |>
 
 # Water Quality -----------------------------------------------------------
 
-wq_raw = readRDS(file.path("data", "wq.rds"))
+wq_raw = readRDS(file.path("data", "wq_combined.rds"))
 
 site_locs = wq_raw |> 
   select(Site, Lat, Lon) |> 
   distinct()
 
 wq = wq_raw |> 
-  mutate(Parameter_Units = ifelse(is.na(Units), Parameter, paste0(Parameter, " (", Units, ")"))) |> 
-  select(Date, Level, Parameter = Parameter_Units, Site, Value = Result)
+  mutate(Date = as.character(Date),
+         # some typos in the year part of date
+         Date = sub("0025", "2025", Date),
+         Date = ymd(Date),
+         Element = ifelse(Element == "  ", "Other", Element),
+         Level = ifelse(is.na(Level), "Surface", Level),
+         Parameter = ifelse(Parameter %in% c("CAFFEINE", "SUCRALOSE"),
+                            stringr::str_to_title(Parameter), Parameter),
+         Parameter_Units = ifelse(is.na(Units), Parameter, paste0(Parameter, " (", Units, ")"))) |> 
+  select(Date, Level, Element, Parameter = Parameter_Units, Site, Value = Result)
 
 min_date_wq = min(wq[["Date"]], na.rm = TRUE)
 max_date_wq = max(wq[["Date"]], na.rm = TRUE)
+elements = c("Routine", "Groundwater", "MST", "Isotopes", "Tracers", "Other")
 
 # Map ---------------------------------------------------------------------
 

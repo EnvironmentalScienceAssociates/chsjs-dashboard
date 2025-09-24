@@ -13,30 +13,65 @@ waterQualityServer <- function(id, nav_page){
     rv <- reactiveValues(last_param = NULL)
     
     # Filter ------------------------------------------------------------------
-
+    
     datSub1 <- reactive({
-      filter(wq, Level == input$level & Date >= input$date_range[1] & Date <= input$date_range[2])
+      wq[wq[["Element"]] %in% input$elements & 
+           wq[["Level"]] == input$level & 
+           wq[["Date"]] >= input$date_range[1] & 
+           wq[["Date"]] <= input$date_range[2], ]
+    })
+    
+    ds1Params <- reactive({
+      sort(unique(datSub1()$Parameter))
     })
     
     observe({
       req(datSub1())
-      params = sort(unique(datSub1()$Parameter))
+      params = ds1Params()
       
-      if (is.null(rv$last_param) || input$parameter != rv$last_param) rv$last_param = input$parameter
-      sel = if (rv$last_param %in% params) rv$last_param else params[1]
-      updateSelectInput(session, 'parameter', choices = params, selected = sel)
+      if (input$panel == "Scatter Plot"){
+        updateSelectInput(session, 'scatter_x', choices = params)
+      } else {
+        if (is.null(rv$last_param) || input$parameter != rv$last_param) rv$last_param = input$parameter
+        sel = if (rv$last_param %in% params) rv$last_param else params[1]
+        updateSelectInput(session, 'parameter', choices = params, selected = sel)
+      }
+    })
+    
+    observeEvent(input$scatter_x, {
+      params = ds1Params()
+      freezeReactiveValue(input, "scatter_y")
+      updateSelectInput(session, 'scatter_y', choices = params[params != input$scatter_x])
+    })
+    
+    observe({
+      req(datSub1())
       
       sites = sort(unique(datSub1()$Site))
       freezeReactiveValue(input, "sites")
-      updatePickerInput(session, "sites", choices = sites, selected = sites)
+      
+      if (input$panel %in% c("Map", "Scatter Plot", "Table")){
+        ab = TRUE
+        mo = length(sites)
+        st = sites
+      } else {
+        ab = FALSE
+        mo = 10
+        st = sites[1:mo]
+      }
+      
+      updatePickerInput(session, "sites", choices = sites, selected = st,
+                        options = pickerOptions(actionsBox = ab, maxOptions = mo))
     })
     
     datSub2 <- reactive({
-      filter(datSub1(), Site %in% input$sites)
+      dfx = datSub1()
+      dfx[dfx[["Site"]] %in% input$sites, ]
     })
     
     datSub3 <- reactive({
-      filter(datSub2(), Parameter == input$parameter)
+      dfx = datSub2()
+      dfx[dfx[["Parameter"]] %in% input$parameter, ]
     })
     
     # Time Series Plot --------------------------------------------------------
@@ -100,13 +135,43 @@ waterQualityServer <- function(id, nav_page){
       p = ggplot(tileSumm(), aes(y = Site, x = Parameter, fill = Percentile, label = Value)) +
         geom_tile() +
         scale_y_discrete(limits = rev) +
-        scale_fill_gradient2(mid = "#f7f7f7", low = scales::muted(blue_dark), high = scales::muted("red"), midpoint = 50) +
-        labs(x = "",) +
+        scale_fill_gradient2(mid = "#f7f7f7", low = scales::muted(blue_dark), 
+                             high = scales::muted("red"), midpoint = 50) +
+        labs(x = "") +
         theme_bw() +
         theme(axis.text.x = element_text(angle = 30, hjust = 1, vjust = 0.5))
       
       ggplotly(p)
     })
+    
+    
+    # Scatter Plot ------------------------------------------------------------
+    
+    scatterData <- reactive({
+      req(input$scatter_x, input$scatter_y, nrow(datSub2()) > 0)
+      params_sel = c(input$scatter_x, input$scatter_y)
+      datSub2() |> 
+        filter(Parameter %in% params_sel) |> 
+        pivot_wider(names_from = Parameter, values_from = Value,
+                    values_fn = list) |> 
+        unnest(cols = all_of(params_sel)) |> 
+        mutate(tooltip = paste0("Site: ", Site, "<br>",
+                                "Date: ", Date, "<br>",
+                                input$scatter_x, ": ", .data[[input$scatter_x]], "<br>",
+                                input$scatter_y, ": ", .data[[input$scatter_y]])) |> 
+        filter(!is.na(.data[[input$scatter_x]]) & !is.na(.data[[input$scatter_y]]))
+    })
+    
+    output$scatterPlot <- renderPlotly({
+      p = ggplot(scatterData(), aes(x = .data[[input$scatter_x]], 
+                                    y = .data[[input$scatter_y]],
+                                    text = tooltip)) +
+        geom_point(alpha = 0.8, col = blue_dark) +
+        theme_bw()
+      
+      ggplotly(p, tooltip = "text")
+    })
+    
     
     # Map ---------------------------------------------------------------------
     
@@ -116,7 +181,8 @@ waterQualityServer <- function(id, nav_page){
         group_by(Site, Parameter) |> 
         summarise(Value = statFN()(Value, na.rm = TRUE)) |>
         mutate(Popup = paste(Parameter, "<br>", Value)) |> 
-        left_join(site_locs, by = join_by(Site))
+        left_join(site_locs, by = join_by(Site)) |> 
+        filter(!is.na(Value))
     })
     
     output$map <- renderLeaflet({
