@@ -30,12 +30,6 @@ page_navbar(
     title = "Seagrass",
     layout_columns_custom(seagrassUI("sg"))
   ),
-  nav_panel(
-    title = "Groundwater"
-  ),
-  nav_panel(
-    title = "Events"
-  ),
   nav_spacer(),
   nav_item(a(icon("github"), href = "https://github.com/EnvironmentalScienceAssociates/chsjs-dashboard",
              target = "_blank", title = "Source Code"))
