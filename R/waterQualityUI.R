@@ -9,7 +9,7 @@ waterQualityUI <- function(id){
                      start = min_date_wq, end = max_date_wq, 
                      min = min_date_wq, max = max_date_wq),
       pickerInput(inputId = ns("elements"), label = "Elements", multiple = TRUE,
-                  choices = elements, selected = elements, 
+                  choices = elements, selected = "Routine", 
                   options = pickerOptions(actionsBox = TRUE, selectedTextFormat = "count > 3")),
       selectInput(inputId = ns('level'), label = 'Sample Level', 
                   choices = c("Surface", "Bottom")),
@@ -22,7 +22,8 @@ waterQualityUI <- function(id){
                        ns = NS(id)),
       # sites dropdown doesn't depend on selected parameters (and vice versa)
       pickerInput(inputId = ns("sites"), label = "Sites", multiple = TRUE, choices = NULL, 
-                  options = pickerOptions(size = 5, liveSearch = TRUE, selectedTextFormat = "count > 4")),
+                  options = pickerOptions(size = 5, liveSearch = TRUE, selectedTextFormat = "count > 4",
+                                          actionBox = TRUE)),
       conditionalPanel(condition = 'input.panel == "Bar Plot" | input.panel == "Tile Plot" | input.panel == "Map"',
                        selectInput(inputId = ns("stat"), "Statistic", choices = c("Minimum", "Median", "Maximum"),
                                    selected = "Median"),

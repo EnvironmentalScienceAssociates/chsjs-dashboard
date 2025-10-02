@@ -50,18 +50,7 @@ waterQualityServer <- function(id, nav_page){
       sites = sort(unique(datSub1()$Site))
       freezeReactiveValue(input, "sites")
       
-      if (input$panel %in% c("Map", "Scatter Plot", "Table")){
-        ab = TRUE
-        mo = length(sites)
-        st = sites
-      } else {
-        ab = FALSE
-        mo = 10
-        st = sites[1:mo]
-      }
-      
-      updatePickerInput(session, "sites", choices = sites, selected = st,
-                        options = pickerOptions(actionsBox = ab, maxOptions = mo))
+      updatePickerInput(session, "sites", choices = sites, selected = sites)
     })
     
     datSub2 <- reactive({
