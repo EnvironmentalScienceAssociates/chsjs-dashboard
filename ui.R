@@ -1,4 +1,3 @@
-
 page_navbar(
   title = "Clearwater Harbor & St. Joseph Sound",
   window_title = "CHSJS",
@@ -6,7 +5,8 @@ page_navbar(
   navbar_options = navbar_options(bg = blue_dark),
   theme = bs_theme(
     primary = blue_light,
-    secondary = blue_dark) |> 
+    secondary = blue_dark
+  ) |>
     bs_add_rules(list(paste0("h", 1:5, " { color: ", blue_dark, "; }"))),
   nav_panel(
     title = "About",
@@ -31,6 +31,10 @@ page_navbar(
     layout_columns_custom(seagrassUI("sg"))
   ),
   nav_spacer(),
-  nav_item(a(icon("github"), href = "https://github.com/EnvironmentalScienceAssociates/chsjs-dashboard",
-             target = "_blank", title = "Source Code"))
+  nav_item(a(
+    icon("github"),
+    href = "https://github.com/EnvironmentalScienceAssociates/chsjs-dashboard",
+    target = "_blank",
+    title = "Source Code"
+  ))
 )
