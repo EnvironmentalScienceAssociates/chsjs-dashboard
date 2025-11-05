@@ -12,7 +12,7 @@ egnyte_files = c(
   "seagrass_sites.rds",
   "seagrass_species.rds",
   "seagrass_stations.rds",
-  "wq_combined.rds"
+  "wq.rds"
 )
 for (i in egnyte_files) {
   if (file.exists(file.path("data", i))) file.remove(file.path("data", i))

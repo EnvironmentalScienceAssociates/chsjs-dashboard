@@ -39,7 +39,7 @@ egnyte_files = c(
   "seagrass_sites.rds",
   "seagrass_species.rds",
   "seagrass_stations.rds",
-  "wq_combined.rds"
+  "wq.rds"
 )
 
 for (i in egnyte_files) {
@@ -105,7 +105,7 @@ isotopes = readRDS(file.path("data", "isotopes.rds")) |>
 
 # Water Quality -----------------------------------------------------------
 
-wq_raw = readRDS(file.path("data", "wq_combined.rds"))
+wq_raw = readRDS(file.path("data", "wq.rds"))
 
 site_locs = wq_raw |>
   select(Site, Lat, Lon) |>
