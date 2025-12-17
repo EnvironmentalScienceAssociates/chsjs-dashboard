@@ -61,7 +61,7 @@ waterQualityUI <- function(id) {
           size = 5,
           liveSearch = TRUE,
           selectedTextFormat = "count > 4",
-          actionBox = TRUE
+          actionsBox = TRUE
         )
       ),
       conditionalPanel(
