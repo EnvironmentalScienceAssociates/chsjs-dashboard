@@ -13,7 +13,7 @@ waterQualityServer <- function(id, nav_page) {
 
     datSub1 <- reactive({
       wq[
-        wq[["Element2"]] %in%
+        wq[["Element"]] %in%
           input$elements &
           wq[["Level"]] == input$level &
           wq[["Date"]] >= input$date_range[1] &

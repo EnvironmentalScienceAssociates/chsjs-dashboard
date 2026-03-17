@@ -117,7 +117,6 @@ wq = wq_raw |>
     # some typos in the year part of date
     Date = sub("0025", "2025", Date),
     Date = ymd(Date),
-    Element2 = ifelse(Element == "Routine", Element, "Other"),
     Level = ifelse(is.na(Level), "Surface", Level),
     Parameter = ifelse(
       Parameter %in% c("CAFFEINE", "SUCRALOSE"),
@@ -133,7 +132,7 @@ wq = wq_raw |>
   select(
     Date,
     Level,
-    Element2,
+    Element,
     Parameter = Parameter_Units,
     Site,
     Value = Result
@@ -141,7 +140,7 @@ wq = wq_raw |>
 
 min_date_wq = min(wq[["Date"]], na.rm = TRUE)
 max_date_wq = max(wq[["Date"]], na.rm = TRUE)
-elements = c("Routine", "Other")
+elements = c("Routine", "Groundwater", "TS Debby", "Tracer")
 
 # Map ---------------------------------------------------------------------
 
