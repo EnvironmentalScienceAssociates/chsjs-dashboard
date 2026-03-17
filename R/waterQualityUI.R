@@ -12,16 +12,12 @@ waterQualityUI <- function(id) {
         min = min_date_wq,
         max = max_date_wq
       ),
-      pickerInput(
+      checkboxGroupInput(
         inputId = ns("elements"),
-        label = "Elements",
-        multiple = TRUE,
+        label = "Sampling Elements",
+        inline = TRUE,
         choices = elements,
-        selected = "Routine",
-        options = pickerOptions(
-          actionsBox = TRUE,
-          selectedTextFormat = "count > 3"
-        )
+        selected = elements
       ),
       selectInput(
         inputId = ns('level'),
