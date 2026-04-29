@@ -57,8 +57,8 @@ rainfallServer <- function(id, nav_page) {
         proxy |>
           leafgl::addGlPolygons(
             data = rainfall(),
-            fillColor = rainfall()$fill_color,
-            fillOpacity = 0.7,
+            color = rainfall()$fill_color,
+            fillOpacity = 0.8,
             popup = rainfall()$label
           )
       }
