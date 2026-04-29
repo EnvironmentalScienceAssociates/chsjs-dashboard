@@ -7,7 +7,12 @@ page_navbar(
     primary = blue_light,
     secondary = blue_dark
   ) |>
-    bs_add_rules(list(paste0("h", 1:5, " { color: ", blue_dark, "; }"))),
+    bs_add_rules(
+      list(
+        paste0("h", 1:5, " { color: ", blue_dark, "; }"),
+        ".bslib-sidebar-resize-handle { display: none !important; }"
+      )
+    ),
   nav_panel(
     title = "About",
     layout_columns_custom(
